@@ -1,5 +1,8 @@
 import Link from "next/link";
 import Container from "../Container";
+import { Bebas_Neue } from "next/font/google";
+
+const bebasNeue = Bebas_Neue({subsets: ['latin'], weight:['400']});
 
 const Navbar = () => {
     return (
@@ -20,7 +23,7 @@ const Navbar = () => {
                 gap-3
                 md:gap-0
                 ">
-                    <Link href="/">
+                    <Link href="/" className={`${bebasNeue.className} font-bold text-2xl`}>
                         JTC-STORE
                     </Link>
                     <div className="hidden md:block">search</div>

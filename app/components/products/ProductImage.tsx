@@ -1,5 +1,3 @@
-"use client";
-
 import Image from 'next/image'
 
 import { CartProductType, selectedImgType } from "@/app/product/[productId]/ProductDetails";
@@ -64,7 +62,16 @@ const ProductImage: React.FC<ProductImageProps> = ({
                     )
                 })}
             </div>
-            <div></div>
+            <div className="col-span-5 relative aspect-square">
+                <Image fill src={cartProduct.selectedImg.image} alt={cartProduct.name} className="
+                w-full
+                h-full
+                object-contain
+                max-h-[500px]
+                min-h-[300px]
+                sm:min-h-[400px]
+                "/>
+            </div>
         </div>
      );
 }

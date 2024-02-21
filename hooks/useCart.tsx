@@ -1,5 +1,5 @@
 import { CartProductType } from "@/app/product/[productId]/ProductDetails";
-import { createContext, useState, useContext, useCallback } from "react";
+import { createContext, useState, useContext, useCallback, useEffect } from "react";
 
 type CartContextType = {
     cartTotalQty: number;
@@ -16,7 +16,15 @@ interface Props{
 export const CartContextProvider = (props: Props) => {
 
     const [cartTotalQty, setCartTotalQty] = useState(0)
-    const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null)
+    const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
+
+    useEffect(() => {
+        const cartItems: any = localStorage.getItem('JTCCartItems')
+         const cProducts: CartProductType[] | null = JSON.parse(cartItems);
+
+         setCartProducts(cProducts);
+    }, [])
+
     const handleAddProductToCart = useCallback((product: CartProductType) => {
         setCartProducts((prev) => {
             let updatedCart;
@@ -25,6 +33,7 @@ export const CartContextProvider = (props: Props) => {
             }else{
                 updatedCart= [product]
             }
+            localStorage.setItem('JTCCartItems', JSON.stringify(updatedCart))
             return updatedCart;
         })
     }, [])

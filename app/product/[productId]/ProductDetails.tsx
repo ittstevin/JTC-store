@@ -1,18 +1,78 @@
 "use client";
 
+import Button from "@/app/components/Button";
+import SetColor from "@/app/components/products/SetColor";
+import SetQuantity from "@/app/components/products/SetQuantity";
 import { Rating } from "@mui/material";
+import { useCallback, useState } from "react";
 
 interface ProductDetailsProps{
     product: any
+}
+
+export type CartProductType = {
+    id: string,
+    name: string,
+    description: string,
+    category: string,
+    brand: string,
+    selectedImg: selectedImgType,
+    quantity: number,
+    price: number
+}
+
+export type selectedImgType = {
+    color: string,
+    colorCode: string,
+    image: string
 }
 
 const Horizontal =() => {
     return <hr className="w-[30%] my-2"/>
 };
 
-const ProductDetails:React.FC<ProductDetailsProps> = ({ product }) => {
+    const ProductDetails:React.FC<ProductDetailsProps> = ({ product }) => {
+
+    const [CartProduct, setCartProduct] = useState<CartProductType>({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        category: product.category,
+        brand: product.brand,
+        selectedImg: { ...product.images[0] },
+        quantity: 1,
+        price: product.price,
+    })
+
+    console.log(CartProduct)
 
     const productRating = product.reviews.reduce((acc:number, item:any) => item.rating + acc, 0) / product.reviews.length
+
+    const handleColorSelect = useCallback((value: selectedImgType) => {
+        setCartProduct((prev) => {
+            return {...prev, selectedImg: value}
+        })
+    },[CartProduct.selectedImg])
+
+    const handleQtyIncrease = useCallback(() => {
+        if (CartProduct.quantity === 99){
+            return;
+        }
+    
+        setCartProduct((prev) => {
+            return {...prev, quantity: prev.quantity + 1}
+        });
+    },[CartProduct]);
+    
+    const handleQtyDecrease = useCallback(() => {
+        if (CartProduct.quantity === 1){
+            return;
+        }
+        setCartProduct((prev) => {
+            return {...prev, quantity: prev.quantity - 1}
+        });
+    },[CartProduct]);
+    
 
     return ( 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -33,13 +93,26 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({ product }) => {
                     <span className="font-semibold">BRAND:</span> {product.brand}
                 </div>
                 <div className={product.inStock ? 'text-teal-400' : 'text-rose-400'}>{product.inStock ? "Available" : "Out of Stock"}</div>
+                <Horizontal />
+                <SetColor 
+                cartProduct={CartProduct}
+                images={product.images}
+                handleColorSelect={handleColorSelect}
+                />
+                <Horizontal />
+                <SetQuantity 
+                cartProduct={CartProduct}
+                handleQtyIncrease={handleQtyIncrease}
+                handleQtyDecrease={handleQtyDecrease}
+                />
+                <Horizontal />
+                <div>
+                    <Button 
+                    label="Add To Cart"
+                    onClick={() => {}}
+                    />
+                </div>
             </div>
-            <Horizontal />
-            <div>color</div>
-            <Horizontal />
-            <div>quantity</div>
-            <Horizontal />
-            <div>add to cart</div>
         </div>
      );
 }

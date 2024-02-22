@@ -1,12 +1,14 @@
 import { CartProductType } from "@/app/product/[productId]/ProductDetails";
 import { createContext, useState, useContext, useCallback, useEffect } from "react";
-import toast, { Toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 type CartContextType = {
     cartTotalQty: number;
     cartProducts: CartProductType[] | null;
     handleAddProductToCart: (product: CartProductType) => void;
-}
+    handleRemoveProductFromCart: (product: CartProductType) => void;
+    handleCartQtyIncrease: (product: CartProductType) => void;
+};
 
 export const CartContext = createContext<CartContextType | null>(null);
 
@@ -41,10 +43,43 @@ export const CartContextProvider = (props: Props) => {
         })
     }, [])
 
+    const handleRemoveProductFromCart = useCallback((product: CartContextType) => {
+        if(cartProducts){
+            const filteredProducts = cartProducts.filter((item) => {
+                return item.id !== product.id
+            })
+            setCartProducts(filteredProducts)
+            toast.success("Product removed from Cart")
+            localStorage.setItem('JTCCartItems', JSON.stringify(filteredProducts))
+        }
+    }, [cartProducts])
+
+    const handleCartQtyIncrease = useCallback((product: CartProductType) => {
+        let updatedCart;
+
+        if(product.quantity === 99){
+            return toast.error('Maximum Reached!')
+        }
+
+        if(cartProducts){
+            updatedCart = [...cartProducts]
+            const existingIndex = cartProducts.findIndex((item) => item.id === product.id);
+
+            if(existingIndex > -1){
+                updatedCart[existingIndex].quantity = ++updatedCart[existingIndex].quantity
+            }
+
+            setCartProducts(updatedCart)
+            localStorage.setItem('JTCCartItems', JSON.stringify(updatedCart))
+        }
+    }, [cartProducts])
+
     const value = {
         cartTotalQty,
         cartProducts,
-        handleAddProductToCart
+        handleAddProductToCart, 
+        handleRemoveProductFromCart,
+        handleCartQtyIncrease,
     }
 
     return <CartContext.Provider value={value} {...props}/>

@@ -49,7 +49,7 @@ const LoginForm = () => {
                 required
                 type="password"
             />
-            <Button label={isLoading ? "Loading" : 'Login'} onClick={handleSubmit(onsubmit)} />
+            <Button label={isLoading ? "Loading..." : 'Login'} onClick={handleSubmit(onsubmit)} />
             <p className="text-sm">Do not Have an Account? <Link className="underline" href='/register'>Register</Link></p>
         </>
      );

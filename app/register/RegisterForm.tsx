@@ -39,7 +39,7 @@ const RegisterForm = () => {
                 if(callback?.ok){
                     router.push('/cart')
                     router.refresh()
-                    toast.success('Logged In')
+                    toast.success('Logged In Successfully')
                 }
 
                 if(callback?.error){

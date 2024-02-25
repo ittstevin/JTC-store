@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "../Container";
 import { Bebas_Neue } from "next/font/google";
 import CartCount from "./CartCount";
+import UserMenu from "./UserMenu";
 
 const bebasNeue = Bebas_Neue({subsets: ['latin'], weight:['400']});
 
@@ -35,7 +36,7 @@ const Navbar = () => {
                     md:gap-12
                     ">
                         <CartCount/>
-                        <div>UserMenu</div>
+                        <UserMenu />
                     </div>
                 </div>
             </Container>

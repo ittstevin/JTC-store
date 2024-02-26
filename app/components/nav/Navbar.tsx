@@ -3,10 +3,14 @@ import Container from "../Container";
 import { Bebas_Neue } from "next/font/google";
 import CartCount from "./CartCount";
 import UserMenu from "./UserMenu";
+import { getCurrentUser } from "@/actions/getCurrentUser";
 
 const bebasNeue = Bebas_Neue({subsets: ['latin'], weight:['400']});
 
-const Navbar = () => {
+const Navbar = async () => {
+
+    const currentUser = await getCurrentUser();
+
     return (
     <div className="
     sticky
@@ -36,7 +40,7 @@ const Navbar = () => {
                     md:gap-12
                     ">
                         <CartCount/>
-                        <UserMenu />
+                        <UserMenu currentUser={currentUser} />
                     </div>
                 </div>
             </Container>

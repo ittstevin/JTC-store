@@ -128,7 +128,7 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({
         router.refresh();
       })
       .catch((err) => {
-        toast.error("Oops! Something went wrong");
+        toast.error("Something went wrong");
         console.log(err);
       });
   }, []);

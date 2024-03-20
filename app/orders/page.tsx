@@ -8,7 +8,7 @@ const Orders = async () => {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    return <NullData title="Oops! Access denied" />;
+    return <NullData title="Access denied" />;
   }
 
   const orders = await getOrdersByUserId(currentUser.id);

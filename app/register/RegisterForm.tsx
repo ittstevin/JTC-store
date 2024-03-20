@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useEffect, useState } from "react";
 import Heading from "../components/Heading";
@@ -23,11 +23,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -40,7 +42,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
     }
   }, []);
 
+  const password = watch("password");
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     axios
@@ -76,7 +85,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
 
   return (
     <>
-      <Heading title="Sign up for E~Shop" />
+      <Heading title="Sign up" />
       <Button
         outline
         label="Continue with Google"
@@ -111,6 +120,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
         required
         type="password"
       />
+      <Input
+        id="confirmPassword"
+        label="Confirm Password"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+        type="password"
+        validate={(value) =>
+          value === password || "The passwords do not match"
+        }
+      />
+      {errors.confirmPassword && (
+        <p className="text-red-500">{errors.confirmPassword.message}</p>
+      )}
       <Button
         label={isLoading ? "Loading" : "Sign Up"}
         onClick={handleSubmit(onSubmit)}

@@ -1,42 +1,38 @@
 import axios from 'axios';
 
 const Mpesa = {
-  initiatePayment: async (phoneNumber, amount) => {
+  initiateSTKPush: async (phoneNumber, amount) => {
     try {
-      const response = await axios.post('https://cors-anywhere.herokuapp.com/https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
-        phoneNumber,
-        amount,
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error('Failed to initiate M-Pesa payment');
-    }
-  },
+      const apiKey = 'YOUR_API_KEY';
+      const apiSecret = 'YOUR_API_SECRET';
+      const authHeader = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
-  initiateSTKPush: async (phoneNumber, amount, transactionId) => {
-    try {
-      const response = await axios.post('https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
-        BusinessShortCode: 174379,
-        Password: 'MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjQwMzIyMTUxNjMy',
-        Timestamp: '20240322151632',
-        TransactionType: 'CustomerPayBillOnline',
-        Amount: 1,
-        PartyA: 254708374149,
-        PartyB: '174379',
-        PhoneNumber: 254708374149,
-        CallBackURL: 'https://mydomain.com/path',
-        AccountReference: 'JTC',
-        TransactionDesc: 'product X',
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.MPESA_ACCESS_TOKEN}`,
+      const response = await axios.post(
+        '',
+        {
+          BusinessShortCode: 'YOUR_BUSINESS_SHORT_CODE',
+          Password: 'YOUR_PASSWORD',
+          Timestamp: 'YOUR_TIMESTAMP',
+          TransactionType: 'CustomerPayBillOnline',
+          Amount: amount,
+          PartyA: phoneNumber,
+          PartyB: 'YOUR_BUSINESS_SHORT_CODE',
+          PhoneNumber: phoneNumber,
+          CallBackURL: 'YOUR_CALLBACK_URL',
+          AccountReference: 'YOUR_ACCOUNT_REFERENCE',
+          TransactionDesc: 'YOUR_TRANSACTION_DESCRIPTION',
         },
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${authHeader}`,
+          },
+        }
+      );
+
       return response.data;
     } catch (error) {
-      throw new Error('Failed to initiate STK push');
+      throw new Error('Failed to initiate Mpesa payment');
     }
   },
 };

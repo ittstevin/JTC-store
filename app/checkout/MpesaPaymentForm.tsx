@@ -1,24 +1,36 @@
-"use client"
-// MpesaPaymentForm.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useCart } from "@/hooks/useCart";
 import Mpesa from './mpesa';
+import { formatPrice } from "@/utils/formatPrice";
+
+// Assume the exchange rate from USD to KES is 1 USD = 110 KES (example rate)
+const USD_TO_KES_EXCHANGE_RATE = 110;
 
 interface MpesaPaymentFormProps {
-  totalAmount: number; // Pass the total amount as props
+  totalAmount: number; 
 }
 
 const MpesaPaymentForm: React.FC<MpesaPaymentFormProps> = ({ totalAmount }) => {
+  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent } = useCart();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  const [totalAmountKES, setTotalAmountKES] = useState(0);
+
+  useEffect(() => {
+    // Convert total amount from USD to KES
+    const totalAmountInKES = totalAmount * USD_TO_KES_EXCHANGE_RATE;
+    setTotalAmountKES(totalAmountInKES);
+  }, [totalAmount]);
+
+  const formattedPriceKES = formatPrice(totalAmountKES, 'KES');
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission behavior
 
     setLoading(true);
     try {
-      // Call Mpesa.initiatePayment with the total amount
-      const paymentResponse = await Mpesa.initiatePayment(phoneNumber, totalAmount);
+      // Call Mpesa.initiateSTKPush with the total amount in KES
+      const paymentResponse = await Mpesa.initiateSTKPush(phoneNumber, totalAmountKES);
       // Handle payment response as needed
       console.log(paymentResponse);
       // Simulate notification to the user's phone
@@ -32,6 +44,9 @@ const MpesaPaymentForm: React.FC<MpesaPaymentFormProps> = ({ totalAmount }) => {
   return (
     <div className="w-full max-w-md mx-auto mt-10">
       <h2 className="text-2xl font-semibold mb-4">M-Pesa Payment</h2>
+      <div className="mb-4">
+        <p className="text-lg font-semibold">Total Amount: {formattedPriceKES}</p>
+      </div>
       <form onSubmit={handlePayment} className="space-y-4">
         <div className="flex flex-col">
           <label htmlFor="phone" className="text-sm font-medium">

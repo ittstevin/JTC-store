@@ -1,8 +1,7 @@
-"use client";
+"use client"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-
 import { useCart } from "@/hooks/useCart";
 import { Elements } from "@stripe/react-stripe-js";
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
@@ -26,9 +25,6 @@ const CheckoutClient = () => {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mpesa'>('card');
 
   const router = useRouter();
-
-  console.log("paymentIntent", paymentIntent);
-  console.log("clientSecret", clientSecret);
 
   useEffect(() => {
     if (cartProducts) {
@@ -83,7 +79,7 @@ const CheckoutClient = () => {
     <div className="w-full">
       <div className="flex space-x-4 mb-4">
         <label 
-          className={`flex items-center cursor-pointer border border-transparent ${paymentMethod === 'card' ? 'border-blue-500' : 'border-gray-300'} p-2 rounded-md`}
+          className={`flex items-center cursor-pointer border p-2 rounded-md ${paymentMethod === 'card' ? 'border-blue-500' : 'border-gray-300'}`}
           onClick={() => handlePaymentMethodChange('card')}
         >
           <input
@@ -97,7 +93,7 @@ const CheckoutClient = () => {
           <span className="text-lg font-semibold">Pay with Card</span>
         </label>
         <label 
-          className={`flex items-center cursor-pointer border border-transparent ${paymentMethod === 'mpesa' ? 'border-blue-500' : 'border-gray-300'} p-2 rounded-md`}
+          className={`flex items-center cursor-pointer border p-2 rounded-md ${paymentMethod === 'mpesa' ? 'border-blue-500' : 'border-gray-300'}`}
           onClick={() => handlePaymentMethodChange('mpesa')}
         >
           <input
@@ -142,4 +138,3 @@ const CheckoutClient = () => {
 };
 
 export default CheckoutClient;
-

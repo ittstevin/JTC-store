@@ -1,5 +1,8 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCreditCard, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+
 import { useCart } from "@/hooks/useCart";
 import { Elements } from "@stripe/react-stripe-js";
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
@@ -8,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "../components/Button";
+import MpesaPaymentForm from "./MpesaPaymentForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -19,6 +23,7 @@ const CheckoutClient = () => {
   const [error, setError] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'mpesa'>('card');
 
   const router = useRouter();
 
@@ -26,7 +31,6 @@ const CheckoutClient = () => {
   console.log("clientSecret", clientSecret);
 
   useEffect(() => {
-    //create a paymentintent as soon as the page loads
     if (cartProducts) {
       setLoading(true);
       setError(false);
@@ -71,15 +75,52 @@ const CheckoutClient = () => {
     setPaymentSuccess(value);
   }, []);
 
+  const handlePaymentMethodChange = (method: 'card' | 'mpesa') => {
+    setPaymentMethod(method);
+  };
+
   return (
     <div className="w-full">
-      {clientSecret && cartProducts && (
+      <div className="flex space-x-4 mb-4">
+        <label 
+          className={`flex items-center cursor-pointer border border-transparent ${paymentMethod === 'card' ? 'border-blue-500' : 'border-gray-300'} p-2 rounded-md`}
+          onClick={() => handlePaymentMethodChange('card')}
+        >
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="card"
+            checked={paymentMethod === 'card'}
+            className="hidden"
+          />
+          <FontAwesomeIcon icon={faCreditCard} className="text-lg mr-1" />
+          <span className="text-lg font-semibold">Pay with Card</span>
+        </label>
+        <label 
+          className={`flex items-center cursor-pointer border border-transparent ${paymentMethod === 'mpesa' ? 'border-blue-500' : 'border-gray-300'} p-2 rounded-md`}
+          onClick={() => handlePaymentMethodChange('mpesa')}
+        >
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="mpesa"
+            checked={paymentMethod === 'mpesa'}
+            className="hidden"
+          />
+          <FontAwesomeIcon icon={faMobileAlt} className="text-lg mr-1" />
+          <span className="text-lg font-semibold">Pay with M-Pesa</span>
+        </label>
+      </div>
+      {paymentMethod === 'card' && clientSecret && cartProducts && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm
             clientSecret={clientSecret}
             handleSetPaymentSuccess={handleSetPaymentSuccess}
           />
         </Elements>
+      )}
+      {paymentMethod === 'mpesa' && clientSecret && cartProducts && (
+        <MpesaPaymentForm />
       )}
       {loading && <div className="text-center">Loading Checkout...</div>}
       {error && (
@@ -101,3 +142,4 @@ const CheckoutClient = () => {
 };
 
 export default CheckoutClient;
+

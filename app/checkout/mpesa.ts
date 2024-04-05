@@ -3,24 +3,24 @@ import axios from 'axios';
 const Mpesa = {
   initiateSTKPush: async (phoneNumber, amount) => {
     try {
-      const apiKey = 'YOUR_API_KEY';
-      const apiSecret = 'YOUR_API_SECRET';
+      const apiKey = 'AMPhSiRkUu4i7nAtGzDp51zW5jkf0XS0ikq6th90Ox5a6t8N';
+      const apiSecret = 'xrVZqDsLTRNmqpv5RJ69s3BP5O95fV9A5EN6FYhAI7cZeiAIiea0QASHXcRcfrel';
       const authHeader = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
       const response = await axios.post(
-        '',
+        'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest',
         {
-          BusinessShortCode: 'YOUR_BUSINESS_SHORT_CODE',
-          Password: 'YOUR_PASSWORD',
-          Timestamp: 'YOUR_TIMESTAMP',
+          BusinessShortCode: 174379,
+          Password: "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjQwMzI2MTEzNzE2",
+          Timestamp: '20240326113716',
           TransactionType: 'CustomerPayBillOnline',
-          Amount: amount,
-          PartyA: phoneNumber,
-          PartyB: 'YOUR_BUSINESS_SHORT_CODE',
-          PhoneNumber: phoneNumber,
-          CallBackURL: 'YOUR_CALLBACK_URL',
-          AccountReference: 'YOUR_ACCOUNT_REFERENCE',
-          TransactionDesc: 'YOUR_TRANSACTION_DESCRIPTION',
+          Amount: 1,
+          PartyA: +254790817497,
+          PartyB: 174379,
+          PhoneNumber: +25490817497,
+          CallBackURL: 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest',
+          AccountReference: 'JTC',
+          TransactionDesc: 'Payment',
         },
         {
           headers: {

@@ -34,12 +34,15 @@ const NavBar = async () => {
           md:gap-0
           "
           >
-            <Link
-              href="/"
-              className={`${redressed.className} font-bold text-2xl`}
-            >
-              JTC-STORE
-            </Link>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
+              <Link
+                href="/"
+                className={`${redressed.className} font-bold text-3xl`}
+              >
+                MegaDeals
+              </Link>
+            </div>
             <div className="hidden md:block"><SearchBar/></div>
             <div className="flex items-center gap-8 md:gap-12">
               <CartCount />

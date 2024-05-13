@@ -79,7 +79,7 @@ const CartClient: React.FC<CartClientProps> = ({ currentUser }) => {
             <span>{formatPrice(cartTotalAmount)}</span>
           </div>
           <p className="text-slate-500">
-            Taxes and shipping calculate at checkout
+            Taxes and shipping are calculated at checkout
           </p>
           <Button
             label={currentUser ? "Checkout" : "Login To Checkout"}

@@ -115,9 +115,9 @@ const CheckoutClient = () => {
           />
         </Elements>
       )}
-      {paymentMethod === 'mpesa' && clientSecret && cartProducts && (
-        <MpesaPaymentForm />
-      )}
+      {/* {paymentMethod === 'mpesa' && clientSecret && cartProducts && (
+        // <MpesaPaymentForm />
+      )} */}
       {loading && <div className="text-center">Loading Checkout...</div>}
       {error && (
         <div className="text-center text-rose-500">Something went wrong...</div>

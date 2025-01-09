@@ -24,7 +24,7 @@ const Footer = () => {
           </FooterList>
           <FooterList>
             <h3 className="text-base font-bold mb-2">Customer Service</h3>
-            <Link href="#">Contact Us</Link>
+            <Link href="/support">Contact Us</Link> {/* Updated path */}
             <Link href="#">Shipping Policy</Link>
             <Link href="#">Returns & Exchanges</Link>
             <Link href="#">FAQs</Link>

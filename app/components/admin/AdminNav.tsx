@@ -8,6 +8,7 @@ import {
   MdFormatListBulleted,
   MdLibraryAdd,
 } from "react-icons/md";
+import { IoMdChatboxes } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import Container from "../Container";
 
@@ -44,6 +45,13 @@ const AdminNav = () => {
               label="ManageOrders"
               icon={MdFormatListBulleted}
               selected={pathname === "/admin/manage-orders"}
+            />
+          </Link>
+          <Link href="/admin/chatsupport">
+            <AdminNavItem
+              label="Chat Support"
+              icon={IoMdChatboxes}
+              selected={pathname === "/admin/chatsupport"}
             />
           </Link>
         </div>
